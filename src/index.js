@@ -12,6 +12,9 @@ const tabMaker = function (tabs=['Home','Menu','About']) {
         tabsObj[tab] = document.createElement('button');
         tabsObj[tab].textContent = tabs[i];
         tabsObj[tab].addEventListener('click', () => {
+            while (content.firstChild) {
+                content.removeChild(content.lastChild);
+            }
             addToContent(pageFunctions[i]());
         })
         tabHolder.appendChild(tabsObj[tab]);
@@ -20,12 +23,11 @@ const tabMaker = function (tabs=['Home','Menu','About']) {
 };
 
 const addToContent = function (elements) {
+    tabMaker();
     const content = document.getElementById('content');
     for (let i = 0; i < elements.length; i += 1) {
         content.appendChild(elements[i]);
     };
 };
 
-
-tabMaker();
 addToContent(createFrontPage());
