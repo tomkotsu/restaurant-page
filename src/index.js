@@ -1,37 +1,31 @@
-const createElements = function () {
+import { createFrontPage } from "./front-page";
+import { createMenuPage } from "./menu-page";
+import { createAboutPage } from "./about-page";
+
+const tabMaker = function (tabs=['Home','Menu','About']) {
     const content = document.getElementById('content');
-    // list of elements to add to content
-    const elemArr = ['heading', ]
-// helper functions
-    
-    const addToContent = function (element) {
-        content.appendChild(element);
+    const tabHolder = document.createElement('div');
+    const pageFunctions = [createFrontPage, createMenuPage, createAboutPage]
+    let tabsObj = {};
+    for (let i = 0; i < tabs.length; i += 1) {
+        const tab = tabs[i] + 'Btn';
+        tabsObj[tab] = document.createElement('button');
+        tabsObj[tab].textContent = tabs[i];
+        tabsObj[tab].addEventListener('click', () => {
+            addToContent(pageFunctions[i]());
+        })
+        tabHolder.appendChild(tabsObj[tab]);
     };
-
-// add elements to heading
-    const heading = document.createElement('div');
-    heading.classList.add('heading')
-
-    // create and add headTitle 
-    const headTitle = document.createElement('h1');
-    headTitle.textContent = "だるま食事処";
-    heading.appendChild(headTitle);
-
-    // create and add headImg
-    const headImg = document.createElement('img');
-    headImg.src = "imgs/daruma_illust_2730.png";
-    heading.appendChild(headImg);
-
-// add elements to main    
-    const main = document.createElement('div');    
-    main.classList.add('main');
-
-    //create and add desc
-    const desc = document.createElement('p');
-    desc.textContent = "だるまさんとおいしいラーメンを楽しんで！\
-    　だるまは有機の材料しか使っていませんよ！"
-
-    
+    content.appendChild(tabHolder);
 };
 
-createElements();
+const addToContent = function (elements) {
+    const content = document.getElementById('content');
+    for (let i = 0; i < elements.length; i += 1) {
+        content.appendChild(elements[i]);
+    };
+};
+
+
+tabMaker();
+addToContent(createFrontPage());
